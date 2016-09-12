@@ -1,6 +1,14 @@
 import re
 import shlex
+import attr
 from subprocess import check_output
+
+
+class Screen(attr.make_class('Screen', ['name', 'resolution'])):
+    """Representation of a local screen."""
+    def remove(self):
+        Xrandr.rm_virtual(self.name)
+
 
 class Xrandr(object):
     """Useful bindings for the xrandr command with some output parsing."""
@@ -43,7 +51,7 @@ class Xrandr(object):
         command = '--addmode {output} {resolution}'.format(
             output=name, resolution=resolution)
         Xrandr._run_xrandr(command)
-        return name
+        return Screen(name=name, resolution=Xrandr.resolution(name))
 
     @staticmethod
     def rm_virtual(name):
@@ -62,3 +70,8 @@ class Xrandr(object):
             if line.startswith(name + ' '):
                 info = re.search(regex, line).groupdict()
                 return format_.format(**info)
+
+    @staticmethod
+    def screens():
+        return set([Screen(name=output, resolutions=Xrandr.resolution(output))
+                    for output in Xrandr.outputs()])

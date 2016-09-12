@@ -1,9 +1,10 @@
 import os
 import logging
+import threading
 
 PKG_NAME = 'xrandremote'
 TOP_DIR = os.path.dirname(os.path.abspath(__file__))
-
+GLOBAL_LOCK = threading.Lock()
 
 def logger(filename):
     relative = os.path.relpath(os.path.abspath(filename), start=TOP_DIR)
@@ -15,3 +16,11 @@ def logger(filename):
 def get_icon(filename):
     icon_path = '../icons/scalable/'
     return os.path.join(TOP_DIR, icon_path, filename)
+
+def atomic(func, lock=GLOBAL_LOCK):
+    def run_func_atomically(*args, **kwargs):
+        lock.acquare(lock)
+        value = func(*args, **kwargs)
+        lock.release(lock)
+        return value
+    return run_func_atomically

@@ -1,0 +1,14 @@
+* Tie Manager into indicator
+* Add Caster support for starting/stopping casting to remote screens
+* Tie xrandrlistener into Manager to call update_locals
+* Tie mediadlna into Manager to call update_remotes
+* Update icon to correct size
+* Create package/ppa
+* Create useful docs
+
+Threads:
+    1. Indicator
+    2. Mediadlna
+    3. xrandrlistener
+    4. ffmpeg pipes (maybe)?
+
