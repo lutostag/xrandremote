@@ -1,4 +1,5 @@
 from xrandremote.util import logger, get_icon, PKG_NAME
+from functools import partial
 import signal
 import gi
 gi.require_version('Gtk', '3.0')
@@ -8,15 +9,6 @@ from gi.repository import Gtk as gtk  # noqa
 from gi.repository import AppIndicator3 as appindicator  # noqa
 
 LOG = logger(__name__)
-
-
-def create_callback(function, *default_args, **default_kwargs):
-    def instantiate_callback(*args, **kwargs):
-        default_args.extend(args)
-        default_kwargs.update(**kwargs)
-        return function(*default_args, **default_kwargs)
-
-    return instantiate_callback
 
 
 class IndicatorMenu(gtk.Menu):
@@ -56,7 +48,7 @@ class IndicatorMenu(gtk.Menu):
         for entry in entries:
             toggle_item = gtk.CheckMenuItem.new_with_label(entry)
             toggle_item.connect(
-                'activate', create_callback(self._callback, entry=entry))
+                'activate', partial(self._callback, entry=entry))
             self.add_entry(toggle_item)
         self.show_all()
 
