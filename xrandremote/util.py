@@ -2,6 +2,7 @@ import os
 import logging
 import threading
 
+
 PKG_NAME = 'xrandremote'
 TOP_DIR = os.path.dirname(os.path.abspath(__file__))
 GLOBAL_LOCK = threading.Lock()
@@ -19,7 +20,7 @@ def get_icon(filename):
 
 def atomic(func, lock=GLOBAL_LOCK):
     def run_func_atomically(*args, **kwargs):
-        lock.acquare(lock)
+        lock.acquire(lock)
         value = func(*args, **kwargs)
         lock.release(lock)
         return value
