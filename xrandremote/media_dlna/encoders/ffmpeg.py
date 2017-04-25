@@ -7,4 +7,3 @@ from pulseaudio_dlna.encoders.ffmpeg import (
     FFMpegOggEncoder, FFMpegFlacEncoder, FFMpegOpusEncoder)
 
 logger = logging.getLogger('xrandrremote.media_dlna.encoders.ffmpeg')
-
