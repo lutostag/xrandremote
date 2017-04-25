@@ -1,6 +1,13 @@
-#xrandremote -- remote screens seamlessly
+# xrandremote <img src="https://cdn.rawgit.com/lutostag/xrandremote/157a3786/icons/scalable/xrandremote-indicator.svg" alt="" width="57" height="32"/>
 
-This is an indicator applet for connecting to remote screens.
+*remote screens seamlessly*
+
+An indicator applet for connecting to remote screens.
+
+***
+Still in development. Does not work at the moment.
+
+***
 
 Currently it supports:
  * chromecast
@@ -16,4 +23,3 @@ $ sudo apt install xrandremote
 run it simply with:
 ```
 $ xrandremote
-```
