@@ -1,12 +1,16 @@
+import multiprocessing
 from xrandremote.util import atomic
 from xrandremote.display import Xrandr, Screen
 from xrandremote.caster import Caster
+from xrandremote.renderers import RendererList
 
 
 class Manager(object):
     """This holds a mapping of:
     {remote_screen: Caster(screen, remote)}"""
     def __init__(self):
+        self.manager = multiprocessing.Manager()
+        self.rendererlist = RendererList()
         self.remotes = {}  # mapping of remote: screen
 
     @atomic
@@ -29,7 +33,8 @@ class Manager(object):
 
     @atomic
     def update_remotes(self):
-        remote_screens = []  # TODO
+        self.rendererlist.refresh()
+        remote_screens = self.rendererlist.devices
         for remote, caster in self.remotes.items():
             if not caster:
                 continue
