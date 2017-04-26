@@ -21,8 +21,19 @@ def get_icon(filename):
 
 def atomic(func, lock=GLOBAL_LOCK):
     def run_func_atomically(*args, **kwargs):
-        lock.acquire(lock)
+        lock.acquire()
         value = func(*args, **kwargs)
-        lock.release(lock)
+        lock.release()
         return value
     return run_func_atomically
+
+
+def self_atomic(lock_attr):
+    def wrapper(func):
+        def run_func_atomically(self, *args, **kwargs):
+            getattr(self, lock_attr).acquire()
+            value = func(self, *args, **kwargs)
+            getattr(self, lock_attr).release()
+            return value
+        return run_func_atomically
+    return wrapper

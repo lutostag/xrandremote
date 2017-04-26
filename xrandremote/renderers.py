@@ -1,10 +1,9 @@
-import os
 import pulseaudio_dlna.plugins.upnp
 import pulseaudio_dlna.plugins.chromecast
 import pulseaudio_dlna.holder
 import threading
 from multiprocessing import Queue
-from xrandremote.util import atomic
+from xrandremote.util import self_atomic
 
 
 RENDERER_PLUGINS = [
@@ -15,7 +14,7 @@ RENDERER_PLUGINS = [
 
 class SafeHolder(pulseaudio_dlna.holder.Holder):
     @property
-    @atomic(self.lock)
+    @self_atomic('lock')
     def safe_devices(self):
         return self.devices.copy()
 
@@ -28,20 +27,20 @@ class RendererList(object):
         self.lock = threading.Lock()
 
     @property
-    @atomic(self.lock)
+    @self_atomic('lock')
     def renderers(self):
         return self.__renderers.copy()
 
-    @atomic(self.lock)
+    @self_atomic('lock')
     def get_renderer(self, renderer_id):
         return self.__renderers[renderer_id]
 
-    @atomic(self.lock)
+    @self_atomic('lock')
     def __set_renderers(self, renderers):
         self.__renderers = renderers
 
     def refresh(self):
-        holder = pulseaudio_dlna.holder.Holder(
-            plugins=RENDERER_PLUGINS, message_queue=self.message_queue)
+        holder = SafeHolder(plugins=RENDERER_PLUGINS,
+                            message_queue=self.message_queue)
         holder.search(ttl=5)
-        self.__set_renderers(holder.devices)
+        self.__set_renderers(holder.safe_devices)
