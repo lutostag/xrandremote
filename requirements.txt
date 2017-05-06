@@ -1,0 +1,12 @@
+attrs >= 16.3.0
+docopt >= 0.6.1
+requests >= 2.2.1 
+setproctitle >= 1.0.1
+protobuf >= 2.5.0
+notify2 >= 0.3
+psutil >= 1.2.1
+futures >= 2.1.6
+chardet >= 2.0.1
+netifaces >= 0.8
+lxml >= 3
+zeroconf >= 0.17     
